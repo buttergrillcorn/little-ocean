@@ -83,18 +83,18 @@
   --preview-box-shadow-bottom-color: rgba(0, 0, 0, 0.08);
   --preview-box-shadow-left-color: rgba(0, 0, 0, 0.03);
   --search-extract-color: #9da9a0;
-  /* Code Syntax Colors - use light palette in dark mode */
-  --code-bg: #fdf6e3;
-  --code-fg: #5c6a72;
-  --code-border: #e6e2cc;
-  --code-string: #8da101;
-  --code-keyword: #df69ba;
-  --code-func: #3a94c5;
-  --code-comment: #939f91;
-  --code-const: #f57d26;
-  --code-type: #35a77c;
-  --code-red: #f85552;
-  --code-yellow: #dfa000;
+  /* Code Syntax Colors - Everforest Dark Medium */
+  --code-bg: #2d353b;
+  --code-fg: #d3c6aa;
+  --code-border: #475258;
+  --code-string: #a7c080;
+  --code-keyword: #d699b6;
+  --code-func: #7fbbb3;
+  --code-comment: #859289;
+  --code-const: #e69875;
+  --code-type: #83c092;
+  --code-red: #e67e80;
+  --code-yellow: #dbbc7f;
 }
 
 :root[data-theme="light"] {
@@ -126,18 +126,18 @@
   --preview-box-shadow-bottom-color: rgba(0, 0, 0, 0.08);
   --preview-box-shadow-left-color: rgba(0, 0, 0, 0.03);
   --search-extract-color: #829181;
-  /* Code Syntax Colors - use dark palette in light mode */
-  --code-bg: #2d353b;
-  --code-fg: #d3c6aa;
-  --code-border: #475258;
-  --code-string: #a7c080;
-  --code-keyword: #d699b6;
-  --code-func: #7fbbb3;
-  --code-comment: #859289;
-  --code-const: #e69875;
-  --code-type: #83c092;
-  --code-red: #e67e80;
-  --code-yellow: #dbbc7f;
+  /* Code Syntax Colors - Everforest Light Medium */
+  --code-bg: #fdf6e3;
+  --code-fg: #5c6a72;
+  --code-border: #e6e2cc;
+  --code-string: #8da101;
+  --code-keyword: #df69ba;
+  --code-func: #3a94c5;
+  --code-comment: #939f91;
+  --code-const: #f57d26;
+  --code-type: #35a77c;
+  --code-red: #f85552;
+  --code-yellow: #dfa000;
 }
 
 * {
