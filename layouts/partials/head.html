@@ -31,3 +31,5 @@
 <script src="{{ $themejs.RelPermalink }}" defer></script>
 {{ $langjs := resources.Get "js/lang-label.js" | resources.Fingerprint }}
 <script src="{{ $langjs.RelPermalink }}" defer></script>
+{{ $copyjs := resources.Get "js/copy-code.js" | resources.Fingerprint }}
+<script src="{{ $copyjs.RelPermalink }}" defer></script>
