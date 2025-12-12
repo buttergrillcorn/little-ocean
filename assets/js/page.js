@@ -104,21 +104,12 @@ function initializePage(page, level) {
         )
       )
     ) {
-      var prefetchLink = element.href;
+      var prefetchLink = element.href.split("#")[0];
       async function myFetch() {
         let response = await fetch(prefetchLink);
         let text = await response.text();
         let ct = await response.headers.get("content-type");
         if (ct.includes("text/html")) {
-          // Click to open
-          element.addEventListener("click", function (e) {
-            if (!e.ctrlKey && !e.metaKey) {
-              e.preventDefault();
-              insertNote(element.getAttribute("href"), text, this.dataset.level);
-              hidePreview();
-            }
-          });
-
           // Hover to see preview
           element.addEventListener("mouseenter", function (e) {
             showPreview(text, element);

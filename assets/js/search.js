@@ -1,53 +1,106 @@
-function displayResults(results, store) {
-  const searchResults = document.getElementById("results");
-  if (results.length) {
-    let resultList = "<h3 class='search-count'>" + results.length + " results found</h3>";
-    // Iterate and build result list elements
-    for (const n in results) {
-      const item = store[results[n].ref];
-      resultList +=
-        '<li><a href="' + item.url + '">' + item.title + "</a>";
-      resultList += "<span class='search-extract'>" + item.content.substring(0, 100) + "...</span></li>";
-    }
-    searchResults.innerHTML = resultList;
-  } else {
-    searchResults.innerHTML = "No results found.";
-  }
-}
+(() => {
+  if (!window.store || !window.store.length || typeof lunr === "undefined") return;
 
-// Get the query parameter(s)
-const params = new URLSearchParams(window.location.search);
-const query = params.get("query");
-
-// Perform a search if there is a query
-if (query) {
-  // Retain the search input in the form when displaying results
-  document.getElementById("search-input").setAttribute("value", query);
-
-  console.log(window.store);
+  const docs = window.store;
+  const docsById = {};
+  docs.forEach(doc => (docsById[doc.id] = doc));
 
   const idx = lunr(function () {
     this.ref("id");
-    this.field("title", {
-      boost: 15,
-    });
+    this.field("title", { boost: 15 });
     this.field("tags");
-    this.field("content", {
-      boost: 10,
-    });
-
-    for (const key in window.store) {
+    this.field("content", { boost: 10 });
+    docs.forEach(doc => {
       this.add({
-        id: key,
-        title: window.store[key].title,
-        tags: window.store[key].category,
-        content: window.store[key].content,
+        id: doc.id,
+        title: doc.title,
+        tags: (doc.tags || []).join(" "),
+        content: doc.content,
       });
+    });
+  });
+
+  function escapeRegex(s) {
+    return s.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  }
+
+  function runSearch(query) {
+    if (!query || query.trim() === "") return [];
+    const terms = query.trim().split(/\s+/);
+    const q = terms.map(term => term + "*").join(" ");
+    let results = [];
+    try {
+      results = idx.search(q);
+    } catch (e) {
+      console.warn("Search error", e);
+      results = [];
+    }
+    return { results, terms: terms.map(t => t.toLowerCase()) };
+  }
+
+  function renderList(resultsObj, target) {
+    if (!target) return;
+    const { results } = resultsObj;
+    target.classList.add("search-results");
+    if (!results.length) {
+      target.innerHTML = "<div class='search-none'>No results found.</div>";
+      return;
+    }
+    let html = "";
+    results.forEach(res => {
+      const item = docsById[res.ref];
+      if (!item) return;
+      const urlObj = new URL(item.url, window.location.origin);
+      const rel = urlObj.pathname; // drop hash/query; previews fetch clean page
+      html += `<div class="search-item"><a href="${rel}">${item.title}</a></div>`;
+    });
+    target.innerHTML = html;
+  }
+
+  // Search page results
+  const params = new URLSearchParams(window.location.search);
+  const query = params.get("query");
+  if (query) {
+    const resObj = runSearch(query);
+    renderList(resObj, document.getElementById("results"));
+    const input = document.getElementById("search-input");
+    if (input) input.value = query;
+  } else {
+    const target = document.getElementById("results");
+    if (target) target.innerHTML = '<div class="search-empty">You have to type something to search...</div>';
+  }
+})();
+
+// Search box expand/collapse functionality
+(() => {
+  const searchForm = document.getElementById("search");
+  const searchToggle = document.getElementById("search-toggle");
+  const searchInput = document.getElementById("search-input");
+
+  if (!searchForm || !searchToggle || !searchInput) return;
+
+  searchToggle.addEventListener("click", () => {
+    const isExpanded = searchForm.classList.contains("expanded");
+    if (isExpanded) {
+      searchForm.classList.remove("expanded");
+      searchInput.value = "";
+      searchInput.blur();
+    } else {
+      searchForm.classList.add("expanded");
+      setTimeout(() => searchInput.focus(), 300);
     }
   });
 
-  // Perform the search
-  const results = idx.search(query);
-  // Update the list with results
-  displayResults(results, window.store);
-}
+  // Close on clicking outside
+  document.addEventListener("click", (e) => {
+    if (!searchForm.contains(e.target) && searchForm.classList.contains("expanded")) {
+      searchForm.classList.remove("expanded");
+      searchInput.value = "";
+    }
+  });
+
+  // Prevent closing when clicking inside the search form
+  searchForm.addEventListener("click", (e) => {
+    e.stopPropagation();
+  });
+})();

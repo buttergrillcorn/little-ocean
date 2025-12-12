@@ -1,22 +1,21 @@
+{{/* Build a JSON-safe search index for all pages (including root pages) */}}
+{{- $pages := .Site.AllPages -}}
+{{- $docs := slice -}}
+{{- range $pages -}}
+  {{- $docs = $docs | append (dict
+      "id" .Permalink
+      "title" .Title
+      "tags" .Params.tags
+      "content" (.Content | plainify | htmlUnescape)
+      "url" .Permalink) -}}
+{{- end -}}
 <script>
-window.store = {
-    // You can specify your blog section only:
-    {{ range .Site.Pages }}
-    // For all pages in your site, use "range .Site.Pages"
-    // You can use any unique identifier here
-    "{{ .Permalink }}": {
-        // You can customize your searchable fields using any .Page parameters
-        "title": "{{ .Title  }}",
-        "tags": [{{ range .Params.Tags }}"{{ . }}",{{ end }}],
-        "content": {{ .Content | plainify }}, // Strip out HTML tags
-        "url": "{{ .Permalink }}"
-    },
-    {{ end }}
-}
+  window.store = {{ $docs | jsonify }};
+  console.log("search index pages:", {{ len $docs }});
 </script>
 
 {{ $lunrjs := resources.Get "js/lunr.min.js" }}
 <script src="{{$lunrjs.Permalink}}" type="text/javascript"></script>
 
-{{ $searchjs := resources.Get "js/search.js" }}
+{{ $searchjs := resources.Get "js/search.js" | resources.Fingerprint }}
 <script src="{{$searchjs.Permalink}}" type="text/javascript"></script>
