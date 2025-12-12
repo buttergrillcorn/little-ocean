@@ -320,18 +320,16 @@ blockquote {
   padding-left: 1em;
 }
 
-/* Table wrapper for responsive scrolling */
-.content {
-  overflow-x: auto;
-}
-
+/* Table responsive scrolling */
 table {
-  width: 100%;
-  min-width: 100%;
+  max-width: 100%;
+  width: auto;
   border-collapse: collapse;
   background: var(--page-background-color);
   border: 1px solid var(--border);
   table-layout: auto;
+  display: block;
+  overflow-x: auto;
 }
 
 td,
@@ -339,7 +337,7 @@ th {
   padding: 8px 10px;
   border: 1px solid var(--border);
   text-align: left;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 tr:nth-child(even) {
@@ -352,16 +350,13 @@ th {
   font-weight: 600;
 }
 
-/* Mobile: allow horizontal scroll when table is wider than viewport */
-@media only screen and (max-width: 768px) {
-  .content {
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  table {
-    min-width: 600px;
-  }
+/* Enable table scrolling on all screen sizes */
+thead,
+tbody,
+tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed;
 }
 
 pre {
@@ -390,7 +385,7 @@ code {
 code:not(pre code) {
   background-color: var(--surface);
   color: var(--color);
-  border: 3px solid var(--surface-alt);
+  border: 2px solid var(--surface-alt);
 }
 
 /* Basic syntax colors (works with Hugo Chroma classes) */
