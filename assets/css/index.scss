@@ -504,16 +504,17 @@ iframe {
 }
 
 .backlink {
-  width: 282px;
-  height: 118px;
+  width: auto;
+  height: auto;
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 3;
   overflow: hidden;
   user-select: none;
-  margin: 8px -8px 0px;
-  padding: 8px;
-  border-radius: 8px;
+  // margin: 8px -8px 0px;
+  margin: 10px 0px;
+  padding: 10px 14px;
+  border-radius: 0px;
   cursor: pointer;
   background-color: transparent;
   transition: background-color 100ms linear 0s;
