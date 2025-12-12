@@ -219,20 +219,21 @@ function calculatePreviewElementPosition(width, height, marginLeft, marginTop, s
 
   const previewContainerWidth = (width + (marginLeft / scale)) * scale;
   const previewContainerHeight = (height + (marginTop / scale));
-  const verticalPadding = 20; // Minimum padding from top/bottom of viewport
+  const verticalOffset = -50; // Position preview slightly above the link
+  const verticalPadding = 10; // Minimum padding from top/bottom of viewport
 
   const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
 
   const { x: anchorX, y: anchorY, width: anchorWidth, height: anchorHeight } = anchorElement.getBoundingClientRect();
 
-  // Vertical positioning with boundary checking
-  let previewContainerY = anchorY - (previewContainerHeight / 2) + (anchorHeight / 2);
+  // Vertical positioning: start slightly above the link
+  let previewContainerY = anchorY + verticalOffset;
 
   // Ensure preview stays within viewport bounds
   if (previewContainerY < verticalPadding) {
     previewContainerY = verticalPadding;
   } else if (previewContainerY + previewContainerHeight > windowHeight - verticalPadding) {
-    previewContainerY = windowHeight - previewContainerHeight - verticalPadding;
+    previewContainerY = Math.max(verticalPadding, windowHeight - previewContainerHeight - verticalPadding);
   }
 
   let direction = 'left';
@@ -243,15 +244,15 @@ function calculatePreviewElementPosition(width, height, marginLeft, marginTop, s
   const maxArrowTop = previewContainerHeight - (arrowBaseWidth * 3);
   arrowTop = Math.max(minArrowTop, Math.min(maxArrowTop, arrowTop));
 
-  // Horizontal positioning
+  // Horizontal positioning: place directly next to the link
   let previewContainerX = 0;
   if (anchorX < windowWidth / 2) {
     // Left side link, show preview to the right
-    previewContainerX = Math.min(windowWidth - previewContainerWidth - 10, anchorX + anchorWidth + 10);
+    previewContainerX = Math.min(windowWidth - previewContainerWidth, anchorX + anchorWidth);
     direction = 'right';
   } else {
     // Right side link, show preview to the left
-    previewContainerX = Math.max(10, anchorX - previewContainerWidth - 10);
+    previewContainerX = Math.max(0, anchorX - previewContainerWidth - (arrowLength / 2));
     direction = 'left';
   }
 
