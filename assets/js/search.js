@@ -1,16 +1,17 @@
 (() => {
-  if (!window.store || !window.store.length || typeof lunr === "undefined") return;
+  if (!window.store || !window.store.length || typeof lunr === "undefined")
+    return;
 
   const docs = window.store;
   const docsById = {};
-  docs.forEach(doc => (docsById[doc.id] = doc));
+  docs.forEach((doc) => (docsById[doc.id] = doc));
 
   const idx = lunr(function () {
     this.ref("id");
     this.field("title", { boost: 15 });
     this.field("tags");
     this.field("content", { boost: 10 });
-    docs.forEach(doc => {
+    docs.forEach((doc) => {
       this.add({
         id: doc.id,
         title: doc.title,
@@ -27,7 +28,7 @@
   function runSearch(query) {
     if (!query || query.trim() === "") return [];
     const terms = query.trim().split(/\s+/);
-    const q = terms.map(term => term + "*").join(" ");
+    const q = terms.map((term) => term + "*").join(" ");
     let results = [];
     try {
       results = idx.search(q);
@@ -35,24 +36,25 @@
       console.warn("Search error", e);
       results = [];
     }
-    return { results, terms: terms.map(t => t.toLowerCase()) };
+    return { results, terms: terms.map((t) => t.toLowerCase()) };
   }
 
   function renderList(resultsObj, target) {
     if (!target) return;
     const { results } = resultsObj;
-    target.classList.add("search-results");
+    // target.classList.add("search-results");
     if (!results.length) {
       target.innerHTML = "<div class='search-none'>No results found.</div>";
       return;
     }
     let html = "";
-    results.forEach(res => {
+    results.forEach((res) => {
       const item = docsById[res.ref];
       if (!item) return;
       const urlObj = new URL(item.url, window.location.origin);
       const rel = urlObj.pathname; // drop hash/query; previews fetch clean page
-      html += `<div class="search-item"><a href="${rel}">${item.title}</a></div>`;
+      // html += `<div class="search-item"><a href="${rel}">${item.title}</a></div>`;
+      html += `<p><a href="${rel}">${item.title}</a></p>`;
     });
     target.innerHTML = html;
   }
@@ -67,7 +69,9 @@
     if (input) input.value = query;
   } else {
     const target = document.getElementById("results");
-    if (target) target.innerHTML = '<div class="search-empty">You have to type something to search...</div>';
+    if (target)
+      target.innerHTML =
+        '<div class="search-empty">You have to type something to search...</div>';
   }
 })();
 
@@ -93,7 +97,10 @@
 
   // Close on clicking outside
   document.addEventListener("click", (e) => {
-    if (!searchForm.contains(e.target) && searchForm.classList.contains("expanded")) {
+    if (
+      !searchForm.contains(e.target) &&
+      searchForm.classList.contains("expanded")
+    ) {
       searchForm.classList.remove("expanded");
       searchInput.value = "";
     }

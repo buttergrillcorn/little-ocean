@@ -106,21 +106,47 @@ function initializePage(page, level) {
     ) {
       var prefetchLink = element.href.split("#")[0];
       async function myFetch() {
-        let response = await fetch(prefetchLink);
-        let text = await response.text();
-        let ct = await response.headers.get("content-type");
-        if (ct.includes("text/html")) {
-          // Hover to see preview
-          element.addEventListener("mouseenter", function (e) {
-            showPreview(text, element);
-          });
-          element.addEventListener("mouseleave", function (e) {
-            hidePreview();
-          });
+        try {
+          let response = await fetch(prefetchLink);
+          let ct = await response.headers.get("content-type") || "";
+          if (ct.includes("text/html")) {
+            let text = await response.text();
+            element._prefetchedText = text;
+            element.dataset.prefetched = "1";
+            // Hover to see preview (only if we have prefetched content)
+            element.addEventListener("mouseenter", function () {
+              if (this._prefetchedText) showPreview(this._prefetchedText, element);
+            });
+            element.addEventListener("mouseleave", function () {
+              hidePreview();
+            });
+          }
+        } catch (err) {
+          // ignore; fallback handled in click handler
         }
         updateLinkStatuses();
       }
-      return myFetch();
+      myFetch();
+
+      // Click handler with fallback: stack if we can fetch HTML, otherwise navigate normally
+      element.addEventListener("click", async function (e) {
+        if (e.ctrlKey || e.metaKey) return; // allow new tab/window
+        e.preventDefault();
+        const href = this.getAttribute("href");
+        let html = this._prefetchedText;
+        try {
+          if (!html) {
+            const resp = await fetch(prefetchLink);
+            const ct = (await resp.headers.get("content-type")) || "";
+            if (!ct.includes("text/html")) throw new Error("non-html");
+            html = await resp.text();
+          }
+          insertNote(href, html, this.dataset.level);
+          hidePreview();
+        } catch (err) {
+          window.location.href = href; // fallback to normal navigation
+        }
+      });
     }
   });
 }
