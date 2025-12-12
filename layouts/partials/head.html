@@ -11,8 +11,7 @@
 
 <link href="/favicon.png" rel="icon" type="image/x-icon" />
 
-{{ $IndexCss := resources.Get "/css/index.scss" | resources.ToCSS (dict
-"outputStyle" "compressed") | fingerprint }}
+{{ $IndexCss := resources.Get "/css/index.scss" | css.Sass (dict "outputStyle" "compressed") | fingerprint }}
 <link rel="stylesheet" href="{{ $IndexCss.RelPermalink }}" />
 
 <script>
