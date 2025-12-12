@@ -219,26 +219,39 @@ function calculatePreviewElementPosition(width, height, marginLeft, marginTop, s
 
   const previewContainerWidth = (width + (marginLeft / scale)) * scale;
   const previewContainerHeight = (height + (marginTop / scale));
-  const heightOffset = -50;
+  const verticalPadding = 20; // Minimum padding from top/bottom of viewport
 
   const { innerWidth: windowWidth, innerHeight: windowHeight } = window;
 
   const { x: anchorX, y: anchorY, width: anchorWidth, height: anchorHeight } = anchorElement.getBoundingClientRect();
 
-  // Initial positions
-  let previewContainerX = 0;
-  let previewContainerY = Math.min(windowHeight - previewContainerHeight, anchorY + heightOffset);
+  // Vertical positioning with boundary checking
+  let previewContainerY = anchorY - (previewContainerHeight / 2) + (anchorHeight / 2);
+
+  // Ensure preview stays within viewport bounds
+  if (previewContainerY < verticalPadding) {
+    previewContainerY = verticalPadding;
+  } else if (previewContainerY + previewContainerHeight > windowHeight - verticalPadding) {
+    previewContainerY = windowHeight - previewContainerHeight - verticalPadding;
+  }
+
   let direction = 'left';
   let arrowTop = anchorY - previewContainerY - arrowBaseWidth + (anchorHeight / 2);
 
-  // Horizontal
-  if (anchorX < window.innerWidth / 2) {
+  // Clamp arrow position to stay within preview bounds
+  const minArrowTop = arrowBaseWidth;
+  const maxArrowTop = previewContainerHeight - (arrowBaseWidth * 3);
+  arrowTop = Math.max(minArrowTop, Math.min(maxArrowTop, arrowTop));
+
+  // Horizontal positioning
+  let previewContainerX = 0;
+  if (anchorX < windowWidth / 2) {
     // Left side link, show preview to the right
-    previewContainerX = Math.min(windowWidth - previewContainerWidth, anchorX + anchorWidth);
+    previewContainerX = Math.min(windowWidth - previewContainerWidth - 10, anchorX + anchorWidth + 10);
     direction = 'right';
   } else {
     // Right side link, show preview to the left
-    previewContainerX = Math.max(0, anchorX - previewContainerWidth - (arrowLength / 2));
+    previewContainerX = Math.max(10, anchorX - previewContainerWidth - 10);
     direction = 'left';
   }
 

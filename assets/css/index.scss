@@ -320,11 +320,18 @@ blockquote {
   padding-left: 1em;
 }
 
+/* Table wrapper for responsive scrolling */
+.content {
+  overflow-x: auto;
+}
+
 table {
   width: 100%;
+  min-width: 100%;
   border-collapse: collapse;
   background: var(--page-background-color);
   border: 1px solid var(--border);
+  table-layout: auto;
 }
 
 td,
@@ -332,6 +339,7 @@ th {
   padding: 8px 10px;
   border: 1px solid var(--border);
   text-align: left;
+  white-space: nowrap;
 }
 
 tr:nth-child(even) {
@@ -344,11 +352,16 @@ th {
   font-weight: 600;
 }
 
-/* Make tables scrollable on small screens */
-.content table {
-  display: block;
-  width: 100%;
-  overflow-x: auto;
+/* Mobile: allow horizontal scroll when table is wider than viewport */
+@media only screen and (max-width: 768px) {
+  .content {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  table {
+    min-width: 600px;
+  }
 }
 
 pre {
