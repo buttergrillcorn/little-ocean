@@ -370,7 +370,7 @@ pre {
   margin: 1em auto;
   background: var(--code-bg);
   color: var(--code-fg);
-  border: 1px solid var(--code-border);
+  border: 3px solid var(--code-border);
   font-family: "Fira Code", "JetBrains Mono", "SFMono-Regular", Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
   position: relative;
@@ -390,14 +390,14 @@ code {
 code:not(pre code) {
   background-color: var(--surface);
   color: var(--color);
-  border: 2px solid var(--surface-alt);
+  border: 3px solid var(--surface-alt);
 }
 
 /* Basic syntax colors (works with Hugo Chroma classes) */
 .chroma {
   background: var(--code-bg);
   color: var(--code-fg);
-  border: 1px solid var(--code-border);
+  border: 3px solid var(--code-border);
 }
 .chroma code {
   background: inherit;
