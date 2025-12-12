@@ -221,12 +221,12 @@ header {
   align-items: center;
   background: var(--header-background-color);
   // border-bottom: 2px var(--header-border-bottom-color) solid;
-  padding: 15px 15px;
+  padding: 20px 15px;
 }
 
 .site-title {
   // margin: 1px 0 -1px 8px;
-  margin-left: 1em;
+  margin-left: 2vw;
   text-decoration: none;
   cursor: pointer;
   color: var(--header-color);
@@ -242,15 +242,15 @@ header {
 }
 
 .theme-toggle {
-  margin-right: 1em;
+  margin-right: 2vw;
   border: none;
   background: var(--color);
   color: transparent;
   width: 10px;
   height: 10px;
   cursor: pointer;
-  border-radius: 0px;
-  transition: transform 0.1s ease;
+  border-radius: 1px;
+  // transition: transform 0.1s ease;
 }
 .theme-toggle:hover {
   background: var(--primary);
@@ -380,7 +380,7 @@ code {
   background: var(--code-bg);
   color: var(--primary);
   padding: 0.15em 0.3em;
-  border: 2px solid var(--code-border);
+  border: 3px solid var(--code-border);
   border-radius: 0;
   font-family: "Fira Code", "JetBrains Mono", "SFMono-Regular", Menlo, Monaco,
     Consolas, "Liberation Mono", "Courier New", monospace;
@@ -613,7 +613,7 @@ dt + dt + dd {
     opacity 0.3s ease;
 }
 #search.expanded .search-field {
-  width: clamp(40vw, 50vw, 50vw); /* responsive */
+  width: clamp(20vw, 40vw, 50vw); /* responsive */
   opacity: 1;
   pointer-events: auto;
 }
@@ -742,7 +742,7 @@ dt + dt + dd {
   }
 }
 
-/* SMALL SCREENS */
+/* SMALL SCREENS ( MOBILE ) */
 
 @media only screen and (max-width: 600px) {
   body {
@@ -752,7 +752,7 @@ dt + dt + dd {
   header {
     border-right-width: 0;
     border-bottom-width: 2px;
-    padding: 10px 20px;
+    padding: 20px 20px;
   }
 
   header > * {
