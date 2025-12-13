@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
   const codeBlocks = document.querySelectorAll('pre');
 
   codeBlocks.forEach(function(codeBlock) {
+    // Skip if button already exists
+    if (codeBlock.querySelector('.copy-code-button') ||
+        (codeBlock.parentElement && codeBlock.parentElement.querySelector('.copy-code-button'))) {
+      return;
+    }
+
     // Create copy button
     const button = document.createElement('button');
     button.className = 'copy-code-button';
@@ -34,8 +40,8 @@ document.addEventListener('DOMContentLoaded', function() {
       });
     });
 
-    // Add button to code block
-    codeBlock.style.position = 'relative';
-    codeBlock.appendChild(button);
+    // Add button to .highlight wrapper if it exists, otherwise to pre
+    const container = codeBlock.closest('.highlight') || codeBlock;
+    container.appendChild(button);
   });
 });

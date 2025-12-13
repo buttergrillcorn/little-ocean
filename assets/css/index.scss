@@ -426,7 +426,12 @@ code:not(pre code) {
 .chroma .nn {
   color: var(--code-type);
 }
-.highlight,
+.highlight {
+  position: relative;
+  background: var(--code-bg);
+  color: var(--code-fg);
+}
+
 pre code {
   background: var(--code-bg);
   color: var(--code-fg);
@@ -438,10 +443,12 @@ pre[data-lang]::after {
   bottom: 8px;
   right: 10px;
   font-size: 10px;
-  color: var(--code-comment);
-  padding: 0;
-  opacity: 0.7;
+  color: var(--color);
+  background: var(--surface);
+  padding: 2px 6px;
+  opacity: 0.8;
   letter-spacing: 0.5px;
+  border: 1px solid var(--border);
 }
 
 /* Copy button for code blocks */
@@ -457,13 +464,14 @@ pre[data-lang]::after {
   border: 1px solid var(--border);
   border-radius: 0;
   cursor: pointer;
-  opacity: 0;
+  opacity: 0.6;
   transition: opacity 0.2s ease, background 0.2s ease;
   z-index: 10;
 }
 
+.highlight:hover .copy-code-button,
 pre:hover .copy-code-button {
-  opacity: 0.8;
+  opacity: 0.9;
 }
 
 .copy-code-button:hover {
