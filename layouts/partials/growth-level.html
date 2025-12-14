@@ -24,11 +24,18 @@
 {{- /* Backlinks scoring (0-2 points) */ -}}
 {{- /* Count backlinks by searching for links to current page */ -}}
 {{- $currentPath := .RelPermalink -}}
-{{- $currentBaseFileName := .File.BaseFileName -}}
+{{- $currentBaseFileName := "" -}}
+{{- if .File -}}
+  {{- $currentBaseFileName = .File.BaseFileName -}}
+{{- end -}}
 {{- $backlinkCount := 0 -}}
 {{- range .Site.AllPages -}}
   {{- $re := printf `\[.*?\]\(%s.*?\)` $currentPath -}}
-  {{- if and (findRE $re .RawContent) (not (eq $currentBaseFileName .File.BaseFileName)) -}}
+  {{- $pageBaseFileName := "" -}}
+  {{- if .File -}}
+    {{- $pageBaseFileName = .File.BaseFileName -}}
+  {{- end -}}
+  {{- if and (findRE $re .RawContent) (not (eq $currentBaseFileName $pageBaseFileName)) -}}
     {{- $backlinkCount = add $backlinkCount 1 -}}
   {{- end -}}
 {{- end -}}

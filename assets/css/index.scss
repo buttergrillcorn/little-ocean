@@ -540,28 +540,31 @@ hr {
   opacity: 0.8;
 }
 
-/* org-mode TODO states */
+/* org-mode TODO states - Badge style matching growth levels */
 .org-todo {
   display: inline-block;
-  padding: 2px 6px;
-  margin-left: 8px;
-  font-size: 11px;
-  font-weight: 600;
-  letter-spacing: 0.5px;
-  border-radius: 1px;
+  padding: 4px 10px;
+  margin-top: 6px;
+  margin-bottom: 8px;
+  margin-left: 0;
+  background: var(--surface);
   border: 1px solid;
+  border-radius: 1px;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
 }
 
 .org-todo.TODO {
-  color: var(--code-red);
-  background: transparent;
   border-color: var(--code-red);
+  border-left: 3px solid var(--code-red);
+  color: var(--code-red);
 }
 
 .org-todo.WAIT {
-  color: var(--code-yellow);
-  background: transparent;
   border-color: var(--code-yellow);
+  border-left: 3px solid var(--code-yellow);
+  color: var(--code-yellow);
 }
 
 #svg {

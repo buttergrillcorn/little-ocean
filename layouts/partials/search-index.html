@@ -13,13 +13,15 @@
         "tags" .Params.tags
         "content" (.Content | plainify | htmlUnescape)
         "url" .Permalink
-        "growthEmoji" $growth.emoji
-        "growthLevel" $growth.level) -}}
+        "test" "hello"
+        "emoji" $growth.emoji
+        "level" $growth.level) -}}
   {{- end -}}
 {{- end -}}
 <script>
   window.store = {{ $docs | jsonify }};
   console.log("search index pages:", {{ len $docs }});
+  console.log("first doc:", window.store[0]);
 </script>
 
 {{ $lunrjs := resources.Get "js/lunr.min.js" }}
