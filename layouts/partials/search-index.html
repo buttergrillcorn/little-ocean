@@ -2,12 +2,15 @@
 {{- $pages := .Site.AllPages -}}
 {{- $docs := slice -}}
 {{- range $pages -}}
+  {{- $growth := partial "growth-level.html" . -}}
   {{- $docs = $docs | append (dict
       "id" .Permalink
       "title" .Title
       "tags" .Params.tags
       "content" (.Content | plainify | htmlUnescape)
-      "url" .Permalink) -}}
+      "url" .Permalink
+      "growthEmoji" $growth.emoji
+      "growthLevel" $growth.level) -}}
 {{- end -}}
 <script>
   window.store = {{ $docs | jsonify }};

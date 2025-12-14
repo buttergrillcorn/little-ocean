@@ -4,9 +4,15 @@
     <div class="page" data-level="1">
       <div class="content">
         <h1>{{ .Title }}</h1>
+        {{ if ne .File.BaseFileName "_index" }}
+          {{ $growth := partial "growth-level.html" . }}
+          <div class="growth-badge {{ $growth.level }}">
+            <span class="growth-emoji">{{ $growth.emoji }}</span>
+            <span class="growth-label">{{ $growth.label }}</span>
+          </div>
+        {{ end }}
         {{ .Content }}
-      </div>
-      {{ partial "backlinks.html" . }}
+      </div>      {{ partial "backlinks.html" . }}
       </div>
    </div>
 </div>

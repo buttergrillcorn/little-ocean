@@ -1,0 +1,68 @@
+{{- /* Calculate growth level based on multiple metrics */ -}}
+{{- $score := 0 -}}
+
+{{- /* Age scoring (0-3 points) */ -}}
+{{- $age := now.Sub .Date -}}
+{{- $ageHours := $age.Hours -}}
+{{- if ge $ageHours 2160 -}}{{- /* 90+ days */ -}}
+  {{- $score = add $score 3 -}}
+{{- else if ge $ageHours 720 -}}{{- /* 30+ days */ -}}
+  {{- $score = add $score 2 -}}
+{{- else if ge $ageHours 168 -}}{{- /* 7+ days */ -}}
+  {{- $score = add $score 1 -}}
+{{- end -}}
+
+{{- /* Word count scoring (0-3 points) */ -}}
+{{- if ge .WordCount 1000 -}}
+  {{- $score = add $score 3 -}}
+{{- else if ge .WordCount 500 -}}
+  {{- $score = add $score 2 -}}
+{{- else if ge .WordCount 100 -}}
+  {{- $score = add $score 1 -}}
+{{- end -}}
+
+{{- /* Backlinks scoring (0-2 points) */ -}}
+{{- /* Count backlinks by searching for links to current page */ -}}
+{{- $currentPath := .RelPermalink -}}
+{{- $currentBaseFileName := .File.BaseFileName -}}
+{{- $backlinkCount := 0 -}}
+{{- range .Site.AllPages -}}
+  {{- $re := printf `\[.*?\]\(%s.*?\)` $currentPath -}}
+  {{- if and (findRE $re .RawContent) (not (eq $currentBaseFileName .File.BaseFileName)) -}}
+    {{- $backlinkCount = add $backlinkCount 1 -}}
+  {{- end -}}
+{{- end -}}
+
+{{- if ge $backlinkCount 5 -}}
+  {{- $score = add $score 2 -}}
+{{- else if ge $backlinkCount 1 -}}
+  {{- $score = add $score 1 -}}
+{{- end -}}
+
+{{- /* Outbound links scoring (0-2 points) */ -}}
+{{- $linkPattern := `\[.*?\]\(/.*?\)` -}}
+{{- $outboundLinks := findRE $linkPattern .RawContent -}}
+{{- $linkCount := len $outboundLinks -}}
+{{- if ge $linkCount 5 -}}
+  {{- $score = add $score 2 -}}
+{{- else if ge $linkCount 2 -}}
+  {{- $score = add $score 1 -}}
+{{- end -}}
+
+{{- /* Classify based on score (0-10 possible) */ -}}
+{{- $level := "seedling" -}}
+{{- $emoji := "🌱" -}}
+{{- $label := "Seedling" -}}
+
+{{- if ge $score 8 -}}
+  {{- $level = "evergreen" -}}
+  {{- $emoji = "🌳" -}}
+  {{- $label = "Evergreen" -}}
+{{- else if ge $score 4 -}}
+  {{- $level = "budding" -}}
+  {{- $emoji = "🌿" -}}
+  {{- $label = "Budding" -}}
+{{- end -}}
+
+{{- /* Return as dict */ -}}
+{{- return (dict "level" $level "emoji" $emoji "label" $label "score" $score) -}}

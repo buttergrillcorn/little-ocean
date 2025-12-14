@@ -496,6 +496,74 @@ hr {
   background-color: var(--page-hr-background-color);
 }
 
+/* Growth Level Badges */
+.growth-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 10px;
+  margin-bottom: 1.5em;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 1px;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.growth-badge .growth-emoji {
+  font-size: 16px;
+  line-height: 1;
+}
+
+.growth-badge .growth-label {
+  color: var(--color);
+  letter-spacing: 0.3px;
+}
+
+/* Growth level specific colors */
+.growth-badge.seedling {
+  border-left: 3px solid var(--code-string); /* green */
+}
+
+.growth-badge.budding {
+  border-left: 3px solid var(--code-type); /* cyan/teal */
+}
+
+.growth-badge.evergreen {
+  border-left: 3px solid var(--primary); /* primary green */
+}
+
+/* Search results emoji-only display */
+.growth-emoji-only {
+  font-size: 14px;
+  margin-right: 6px;
+  opacity: 0.8;
+}
+
+/* org-mode TODO states */
+.org-todo {
+  display: inline-block;
+  padding: 2px 6px;
+  margin-left: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  border-radius: 1px;
+  border: 1px solid;
+}
+
+.org-todo.TODO {
+  color: var(--code-red);
+  background: transparent;
+  border-color: var(--code-red);
+}
+
+.org-todo.WAIT {
+  color: var(--code-yellow);
+  background: transparent;
+  border-color: var(--code-yellow);
+}
+
 #svg {
   position: absolute;
   top: 0;

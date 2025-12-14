@@ -53,8 +53,8 @@
       if (!item) return;
       const urlObj = new URL(item.url, window.location.origin);
       const rel = urlObj.pathname; // drop hash/query; previews fetch clean page
-      // html += `<div class="search-item"><a href="${rel}">${item.title}</a></div>`;
-      html += `<p><a href="${rel}">${item.title}</a></p>`;
+      const growthEmoji = item.growthEmoji || "";
+      html += `<p><span class="growth-emoji-only">${growthEmoji}</span><a href="${rel}">${item.title}</a></p>`;
     });
     target.innerHTML = html;
   }
